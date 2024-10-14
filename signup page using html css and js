@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Form</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .signup-form {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 300px;
+        }
+        .signup-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .signup-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .signup-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .signup-form button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <form class="signup-form" id="signupForm">
+        <h2>Join CodeYogi</h2>
+        <input type="text" id="name" placeholder="Your Name">
+        <input type="email" id="email" placeholder="Your Email">
+        <input type="password" id="password" placeholder="Password">
+        <button type="submit">Sign Up</button>
+        <p class="error" id="errorMessage"></p>
+    </form>
+
+    <script>
+        const form = document.getElementById('signupForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('errorMessage');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Form ko submit hone se rokta hai
+            errorMessage.textContent = ''; // Pehle error message ko clear karta hai
+
+            if (nameInput.value === '' || emailInput.value === '' || passwordInput.value === '') {
+                errorMessage.textContent = 'Please fill out all fields';
+                return;
+            }
+
+            // Data ko server par bhejne ke liye AJAX call ya fetch API ka use kar sakte ho
+            const formData = {
+                name: nameInput.value,
+                email: emailInput.value,
+                password: passwordInput.value
+            };
+
+            // Data ko post karo given URL par
+            fetch('https://codeyogi.io/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+
+</body>
+</html>
+
